@@ -123,6 +123,62 @@
     </div>
 </div>
 
+
+<div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">View Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <label for="EmployeeID" class="form-label">EmployeeID : </label>
+                <input id="viewemp_id" type="text" name="EmployeeID" class="form-control" />
+                @* <form asp-action="create" enctype="multipart/form-data"> *@
+
+                <div class="mb-3">
+                    <label for="firstName" class="form-label">First Name : </label>
+                    <input id="viewFirstName" type="text" name="firstName" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="lastName" class="form-label">Last Name : </label>
+                    <input id="viewlastName" type="text" name="lastName" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="contactNumber" class="form-label">Contact Number : </label>
+                    <input id="viewcontactNumber" type="tel" name="contactNo" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="emailId" class="form-label">Email Id : </label>
+                    <input id="viewemailId" type="email" name="emailId" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="age" class="form-label">Age : </label>
+                    <input id="viewage" type="number" name="age" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="imageFile" class="form-label">Image : </label>
+                    <input id="viewimageFile" name="imageFile" id="imageFile" type="file" class="form-control">
+                </div>
+
+                @* <button type="submit" id="btns" class="btn btn-outline-primary mb-3">Submit</button> *@
+                @* </form> *@
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                @* <button type="button" onclick="updateEmployee()" class="btn btn-primary">Save changes</button> *@
+            </div>
+
+        </div>
+    </div>
+</div>
 <table class="table" id="myTable" style="width:100% !important">
         <thead>
             <tr>
@@ -167,7 +223,7 @@
                         {
                             data: null,
                             mRender: function (data, type, row) {
-                                return ` <button type="button" onclick="popupdateData(` + row.id + `)" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal">edit</button> | <button type="button" onclick="DeleteEmployee(` + row.id + `)" class="btn btn-primary" > Delete  </button>`;
+                                return ` <button type="button" onclick="popupdateData(` + row.id + `)" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal">edit</button>|<button type="button" onclick="viewData(` + row.id + `)" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewModal">View</button>|<button type="button" onclick="DeleteEmployee(` + row.id + `)" class="btn btn-primary" >Delete</button>`;
            
                             }
                         }
@@ -192,7 +248,7 @@
             contactNo: $('#contactNumber').val(),
             emailId: $('#emailId').val(),
             age: $('#age').val(),
-             // image : $('#imagefile').val(),
+            image : $('#imagefile').val(),
         }
         debugger;
          $.ajax({
@@ -221,7 +277,7 @@
          if (ans) {
 
              $.ajax({
-                 url: "/Employee/Delete?" + id,
+                 url: "/Employee/Delete?id=" + id,
                  type: "POST",
                  contentType: "application/json",
                  dataType: "json",
@@ -290,6 +346,23 @@
         });
     }
 
+    function viewData(id) {
+        debugger;
+        $.ajax({
+            type: "POST",
+            url: "/Employee/Update?id=" + id,
+            success: function (data) {
+                debugger;
+                $("#viewemp_id").val(data.id);
+                $('#viewFirstName').val(data.firstName);
+                $('#viewlastName').val(data.lastName);
+                $('#viewcontactNumber').val(data.contactNo);
+                $('#viewemailId').val(data.emailId);
+                $('#viewage').val(data.age);
+            },
+        });
+
+    }
 </script>
     
 
