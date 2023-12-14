@@ -1,8 +1,14 @@
 ﻿using CRUDoperation.Models;
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
+using System;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
+using System.Net.Http.Json;
 using System.Security.Cryptography;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
 
 namespace CRUDoperation.Controllers
 {
@@ -10,6 +16,9 @@ namespace CRUDoperation.Controllers
     {
         IConfiguration _configuration;
         string connectionString ;
+
+        //public object JsonSerializer { get; private set; }
+
         public EmployeeController(IConfiguration configuration)
         {
             _configuration = configuration;
@@ -120,9 +129,15 @@ namespace CRUDoperation.Controllers
         {
             return View();
         }
-        [HttpPost]
-        public IActionResult Create([FromBody]EmployeeModel employee)
+        [HttpPost,RequestSizeLimit(25 * 1000 * 1024)]
+        //[RequestSizeLimit(10485760)]
+        //[FileExtensions(Extensions = "jpg,png,gif,jpeg,bmp,svg")]
+        public IActionResult Create(string model, IFormFile file)
         {
+            //EmployeeModel employee = JsonConverter<<EmployeeModel>(model)>;
+            EmployeeModel employee = JsonSerializer.Deserialize<EmployeeModel>(model)!;
+            employee.imageFile = file;
+
             employee.imagePath = UploadImage(employee.imageFile);
 
             try

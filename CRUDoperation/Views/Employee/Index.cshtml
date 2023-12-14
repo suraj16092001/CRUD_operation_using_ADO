@@ -53,7 +53,7 @@
 
                     <div class="mb-3">
                         <label for="imageFile" class="form-label">Image : </label>
-                        <input id="imageFile" name="imageFile" id="imageFile" type="file" class="form-control">
+                        <input id="imageFile" name="imageFile"  type="file" class="form-control">
                     </div>
 
                     @* <button type="submit" id="btns" class="btn btn-outline-primary mb-3">Submit</button> *@
@@ -163,10 +163,10 @@
                     <input id="viewage" type="number" name="age" class="form-control" />
                 </div>
 
-                <div class="mb-3">
+                @* <div class="mb-3">
                     <label for="imageFile" class="form-label">Image : </label>
-                    <input id="viewimageFile" name="imageFile" id="imageFile" type="file" class="form-control">
-                </div>
+                    <input id="viewimageFile" name="imageFile" type="file" />
+                </div> *@
 
                 @* <button type="submit" id="btns" class="btn btn-outline-primary mb-3">Submit</button> *@
                 @* </form> *@
@@ -200,9 +200,14 @@
 <script>
     $(document).ready(function () {
         debugger;
+        get();
+
+    });
+
+    function get(){
         $.ajax({
             type: "GET",
-            url: "/Employee/EmployeeList",
+            url: "Employee/EmployeeList",
             // data: 'first_name=' + firstname + '&last_name=' + lastname + '&contact=' + contactno + '&email=' + emailid + '&age=' + age + '&image=' + image,
             success: function (data) {
                 $('#myTable').DataTable({
@@ -216,15 +221,15 @@
                         { data: 'age' },
                         {
                             data: 'imagePath',
-                            mRender: function (data, type, row) {
-                                return '<img src="/images/' + data + '"width="20px height=20px" />';
+                            render: function (data, type, row) {
+                                return '<img src="/images/' + data + '" width="20px" height="20px" />';
                             }
                         },
                         {
                             data: null,
-                            mRender: function (data, type, row) {
+                            render: function (data, type, row) {
                                 return ` <button type="button" onclick="popupdateData(` + row.id + `)" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal">edit</button>|<button type="button" onclick="viewData(` + row.id + `)" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewModal">View</button>|<button type="button" onclick="DeleteEmployee(` + row.id + `)" class="btn btn-primary" >Delete</button>`;
-           
+
                             }
                         }
                     ]
@@ -236,26 +241,44 @@
             }
 
         });
-
-    });
-
-    
+    }
     function AddEmployee()
     {
         var oModel = {
+            // id:1,
             firstName: $('#firstName').val(),
             lastName: $('#lastName').val(),
             contactNo: $('#contactNumber').val(),
             emailId: $('#emailId').val(),
             age: $('#age').val(),
-            image : $('#imagefile').val(),
+            // imageFile: $("#imageFile")[0].files[0],
+            // image: $('#imagefile').val()
         }
+        // var formData = new FormData(oModel);
+        // let formData = new FormData();
+        // formData.append("firstName",  $('#firstName').val());
+        // formData.append("lastName", $('#lastName').val());
+        // formData.append("contactNo", $('#contactNumber').val());
+        // formData.append("emailId", $('#emailId').val());
+        // formData.append("age", $('#age').val());
+        // formData.append("imageFile", $("#imageFile")[0].files[0]);
+        // formData.append("employee", oModel);
+        // formData.append("image", $("#imageFile")[0].files[0]);
         debugger;
+        var formData = new FormData();
+        formData.append("model",JSON.stringify(oModel));
+        formData.append("file", $("#imageFile")[0].files[0]);
          $.ajax({
             url: "/Employee/Create",
+            data: formData,
+            processData: false,
+            contentType: false,
+            cache: false,
             type: "POST",
-            data:JSON.stringify( oModel),
-            contentType: "application/json",
+
+
+           
+            // contentType: false, // Important: Don't set contentType to "application/json"
             success: function (data, textStatus, jqXHR) {
                 alert('Success!');
                 $('#exampleModal').modal('hide');

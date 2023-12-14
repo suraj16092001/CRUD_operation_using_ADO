@@ -9,8 +9,8 @@ namespace CRUDoperation
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            builder.Services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null); //System.Text.Json.JsonNamingPolicy.CamelCase);
             var app = builder.Build();
-
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
