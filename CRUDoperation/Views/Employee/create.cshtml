@@ -1,0 +1,48 @@
+﻿@model CRUDoperation.Models.EmployeeModel;
+@{
+    ViewData["employee"] = "Employee Information Form";
+}
+<h2>@ViewData["employee"]</h2>
+
+<form asp-action="Create"  enctype="multipart/form-data">
+    
+    <div class="mb-3">
+        <label asp-for="firstName" class="form-label">First Name: </label>
+        <input asp-for="firstName" type="text" class="form-control">   
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="lastName" class="form-label">Last Name: </label>
+        <input asp-for="lastName" type="text" class="form-control">
+        
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="contactNo" class="form-label">Contact No: </label>
+        <input asp-for="contactNo" type="tel" class="form-control">
+
+    </div>
+
+
+    <div class="mb-3">
+        <label asp-for="emailId" class="form-label">Email: </label>
+        <input asp-for="emailId" type="email" class="form-control">
+        
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="age" class="form-label">Age: </label>
+        <input asp-for="age" type="text" class="form-control">
+
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="imageFile" class="form-label" for="inputGroupFile02">Profile Image</label>
+        <input asp-for="imageFile" type="file" class="form-control" id="inputGroupFile02">
+    </div>
+    
+
+    <button type="submit" class="btn btn-primary mb-3" >Submit</button>
+</form>
+
+

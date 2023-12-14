@@ -1,0 +1,50 @@
+﻿@model CRUDoperation.Models.EmployeeModel;
+@{
+    ViewData["employee"] = "Update Employee Information";
+}
+<h2>@ViewData["employee"]</h2>
+
+<form asp-action="Update" enctype="multipart/form-data">
+
+    <div class="mb-3">
+        <label asp-for="firstName" class="form-label">First Name: </label>
+        <input asp-for="firstName" type="text" class="form-control" value="@Model.firstName">
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="lastName" class="form-label">Last Name: </label>
+        <input asp-for="lastName" type="text" class="form-control" value="@Model.lastName">
+
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="contactNo" class="form-label">Contact No: </label>
+        <input asp-for="contactNo" type="tel" class="form-control" value="@Model.contactNo">
+
+    </div>
+
+
+    <div class="mb-3">
+        <label asp-for="emailId" class="form-label">Email: </label>
+        <input asp-for="emailId" type="email" class="form-control" value="@Model.emailId">
+
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="age" class="form-label">Age: </label>
+        <input asp-for="age" type="number" class="form-control" value="@Model.age">
+
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="imageFile" class="form-label" for="inputGroupFile02">Profile Image</label>
+        <input asp-for="imageFile" type="file" class="form-control" id="inputGroupFile02">
+    </div>
+
+    <div class="mb-3">
+        <img src="~/images/@Model.imagePath" width="30px" />
+    </div>
+    
+
+    <button type="submit" class="btn btn-primary mb-3">Update</button>
+</form>
