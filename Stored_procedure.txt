@@ -1,0 +1,103 @@
+
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `DeleteData`(
+In id int
+)
+BEGIN
+Delete from employee where emp_id=id;
+END
+
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetAllData`()
+BEGIN
+Select * from employee ;
+END
+
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetImage`(
+
+In id int
+)
+BEGIN
+SELECT * FROM employee where emp_id=id;
+END
+
+
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertData`(
+IN firstName varchar(50),
+IN lastName varchar(50),
+IN contactNo int,
+IN emailId varchar(50),
+IN age int,
+IN imagePath varchar(50)
+)
+BEGIN
+Insert into employee(first_name, last_name, contact, email, emp_age,image) values
+(firstName, lastName, contactNo, emailId, age,imagePath);
+END
+
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertUpdateData`(
+IN employee_in int ,
+IN firstName varchar(50),
+IN lastName varchar(50),
+IN contactNo varchar(50),
+IN emailID varchar(56),
+IN age int ,
+IN imagePath varchar(455),
+out message varchar(45)
+)
+Begin 
+if(employee_in=0)then
+     if not exists( select * from employee where emp_id =employee_in)then 
+      insert into employee (first_name,last_name,contact,email,emp_age,image) values(firstName,lastName,contactNo,emailID,age,imagePath);
+      set message ="employee inserted";
+     else
+       set message ="employee already exists";
+     end if ;
+else 
+	update employee 
+    set `firstName`=first_name,`lastName`=last_name,`contactNo` =contact,`emailID`=email,`age`=emp_age,`imagePath`=image where `emp_id`=employee_in;
+    set message ="employee updated";
+end if;
+end
+
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `new_procedure`(in emp_id_in int)
+BEGIN
+Delete from employee where emp_id=emp_id_in;
+END
+
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `SearchData`(
+IN search varchar(455)
+)
+BEGIN
+SELECT * FROM suraj.employee
+WHERE emp_id like CONCAT('%', search, '%') OR first_name LIKE CONCAT('%', search, '%');
+END
+
+
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `UpdateData`(
+In id int,
+IN firstName varchar(50),
+IN lastName varchar(50),
+IN contactNo int,
+IN emailId varchar(50),
+IN age int,
+IN imagePath varchar(500)
+
+)
+BEGIN
+update employee set first_name=firstName,last_name=lastName,contact=contactNo,email=emailId,emp_age=age,image=imagePath where emp_id=id;
+END
+
+emp_id
+first_name
+last_name
+contact
+email
+emp_age
+image
