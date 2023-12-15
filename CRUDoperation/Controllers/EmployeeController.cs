@@ -1,4 +1,5 @@
 ﻿using CRUDoperation.Models;
+using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
 using System;
@@ -177,32 +178,40 @@ namespace CRUDoperation.Controllers
             EmployeeModel employeemodel = null;
             const string queryString = "GetImage";
             using (MySqlConnection connection = new MySqlConnection(connectionString))
-            using (MySqlCommand command = new MySqlCommand(queryString, connection))
             {
-                command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@id", id);
-                connection.Open();
-                MySqlDataReader reader = command.ExecuteReader();
-                while (reader.Read())
+                using (MySqlCommand command = new MySqlCommand(queryString, connection))
                 {
-                    employeemodel = new EmployeeModel();
-                    employeemodel.id = (int)reader["emp_id"];
-                    employeemodel.firstName = reader["first_name"].ToString();
-                    employeemodel.lastName = reader["last_name"].ToString();
-                    employeemodel.age = reader["emp_age"].ToString();
-                    employeemodel.contactNo = reader["contact"].ToString();
-                    employeemodel.emailId = reader["email"].ToString();
-                    employeemodel.imagePath = reader["image"].ToString();
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@id", id);
+                    connection.Open();
+                    MySqlDataReader reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        employeemodel = new EmployeeModel();
+                        employeemodel.id = (int)reader["emp_id"];
+                        employeemodel.firstName = reader["first_name"].ToString();
+                        employeemodel.lastName = reader["last_name"].ToString();
+                        employeemodel.age = reader["emp_age"].ToString();
+                        employeemodel.contactNo = reader["contact"].ToString();
+                        employeemodel.emailId = reader["email"].ToString();
+                        employeemodel.imagePath = reader["image"].ToString();
+
+                    }
 
                 }
-
             }
             return Json(employeemodel);
         }
 
         [HttpPost]
-        public IActionResult Update1([FromBody] EmployeeModel employee, int id)
+        public IActionResult Update1(string model, IFormFile file,int id)
         {
+            EmployeeModel employee = JsonSerializer.Deserialize<EmployeeModel>(model)!;
+
+            employee.id = id;
+            employee.imageFile = file;
+
+            employee.imagePath = UploadImage(employee.imageFile);
             try
             {
 
@@ -212,7 +221,7 @@ namespace CRUDoperation.Controllers
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     connection1.Open();
-                    command.Parameters.AddWithValue("@id", id);
+                    command.Parameters.AddWithValue("@id", employee.id);
                     command.Parameters.AddWithValue("@firstName", employee.firstName);
                     command.Parameters.AddWithValue("@lastName", employee.lastName);
                     command.Parameters.AddWithValue("@contactNo", employee.contactNo);
@@ -291,5 +300,6 @@ namespace CRUDoperation.Controllers
             }
             return Json("Index");
         }
+
     }
 }
