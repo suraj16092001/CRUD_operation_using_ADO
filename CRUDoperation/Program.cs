@@ -1,15 +1,17 @@
-namespace CRUDoperation
-{
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
+using CRUDoperation.Extension;
+//namespace CRUDoperation
+//{
+//    public class Program
+//    {
+//        public static void Main(string[] args)
+//        {
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null); //System.Text.Json.JsonNamingPolicy.CamelCase);
+            builder.Services.AddAppSetting();          
             var app = builder.Build();
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -31,6 +33,6 @@ namespace CRUDoperation
                 pattern: "{controller=Employee}/{action=Index}/{id?}");
 
             app.Run();
-        }
-    }
-}
+//        }
+//    }
+//}
