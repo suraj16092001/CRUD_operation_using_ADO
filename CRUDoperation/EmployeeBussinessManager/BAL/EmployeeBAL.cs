@@ -3,6 +3,8 @@ using CRUDoperation.EmployeeBussinessManager.IBAL;
 using CRUDoperation.EmployeeDataManager.DAL;
 using CRUDoperation.EmployeeDataManager.IDAL;
 using CRUDoperation.Models;
+using MySql.Data.MySqlClient;
+using System.Data;
 
 namespace CRUDoperation.EmployeeBussinessManager.BAL
 {
@@ -33,12 +35,6 @@ namespace CRUDoperation.EmployeeBussinessManager.BAL
 
         }
 
-
-        public void Delete(int id)
-        {
-           
-
-        }
         public string UploadImage(IFormFile imageFile)
         {
             try
@@ -80,7 +76,50 @@ namespace CRUDoperation.EmployeeBussinessManager.BAL
             }
 
         }
+        
 
-       
+        //Delete existing file from images folder and delete data 
+        public void Delete(int id)
+        {
+            string existingImage = _IEmployeeDAL.GetProfileImageById(id);
+
+            if (!string.IsNullOrEmpty(existingImage))
+            {
+                string oldImagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", existingImage);
+
+                if (System.IO.File.Exists(oldImagePath))
+                {
+                    System.IO.File.Delete(oldImagePath);
+                }
+            }
+
+            _IEmployeeDAL.Delete(id);
+
+        }
+
+        public EmployeeModel Update(int id)
+        {
+            return _IEmployeeDAL.Update(id);
+        }
+
+        public EmployeeModel Update1(int id, EmployeeModel employee, IFormFile file)
+        {
+            employee.id = id;
+
+            employee.imageFile = file;
+
+                string existingImage = _IEmployeeDAL.GetProfileImageById(id); 
+
+                if (employee.imageFile != null)
+                {
+                    employee.imagePath = UploadImage(employee.imageFile);
+                }
+                else
+                {
+                    employee.imagePath = existingImage;
+                }
+
+                return _IEmployeeDAL.Update1(employee);
+        }
     }
 }

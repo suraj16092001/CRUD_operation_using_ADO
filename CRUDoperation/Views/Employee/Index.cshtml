@@ -321,11 +321,12 @@
             confirmButtonText: "Yes, delete it!"
         }).then((result) => {
             if (result.isConfirmed) {
+
                 $.ajax({
-                    url: "/Employee/Delete?id=" + id,
                     type: "POST",
-                    contentType: "application/json",
-                    dataType: "json",
+                    url: "/Employee/Delete/" + id,
+                    // contentType: "application/json",
+                    // dataType: "json",
                     success: function (result) {
                         alert('Success!');
                         $('#exampleModal').modal('hide');
