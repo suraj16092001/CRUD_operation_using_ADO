@@ -11,7 +11,6 @@ namespace CRUDoperation.EmployeeBussinessManager.BAL
     public class EmployeeBAL : IEmployeeBAL
     {
         IEmployeeDAL _IEmployeeDAL;
-        private IFormFile file;
 
         public EmployeeBAL(IDBManager dBManager)
         {
@@ -25,14 +24,29 @@ namespace CRUDoperation.EmployeeBussinessManager.BAL
         }
 
         //Add employee data to database
-        public EmployeeModel Create(EmployeeModel employee, IFormFile file)
+        public string Create(EmployeeModel employee, IFormFile file)
         {
             employee.imageFile = file;
 
             employee.imagePath = UploadImage(employee.imageFile);
 
-            return _IEmployeeDAL.Create(employee);
+            bool emailExists = CheckEmailExits(employee.emailId);
 
+            if (emailExists)
+            {
+                return "EmailExists";
+            }
+            else 
+            {
+                _IEmployeeDAL.Create(employee);
+                return "Success";
+            }
+
+        }
+
+        public bool CheckEmailExits(string email)
+        {
+            return _IEmployeeDAL.CheckEmailExits(email);
         }
 
         public string UploadImage(IFormFile imageFile)
@@ -76,7 +90,6 @@ namespace CRUDoperation.EmployeeBussinessManager.BAL
             }
 
         }
-        
 
         //Delete existing file from images folder and delete data 
         public void Delete(int id)

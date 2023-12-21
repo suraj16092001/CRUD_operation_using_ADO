@@ -15,5 +15,8 @@ namespace CRUDoperation.EmployeeDataManager.IDAL
         public EmployeeModel Update(int id);
 
         public EmployeeModel Update1(EmployeeModel employee);
+
+        
+        public bool CheckEmailExits(string email);
     }
 }

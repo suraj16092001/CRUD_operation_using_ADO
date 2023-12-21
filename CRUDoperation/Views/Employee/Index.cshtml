@@ -285,25 +285,29 @@
             cache: false,
             // contentType: false, // Important: Don't set contentType to "application/json"
 
-            success: function (data, textStatus, jqXHR) {
-                $('#exampleModal').modal('hide');
-                Swal.fire({
-                    title: "Employee Details Added Sucessfully!",
-                    text: "close",
-                    icon: "success"
-                });
+            success: function (data) {
 
-                get();
-               
-            },
-            error: function (jqXHR, textStatus, errorThrown) {  
-                Swal.fire({
-                    title: "error occured",
-                    text: "close",
-                    icon: "error"
-                });
+                if (data === "Email Id Already Exists!") {
+                    Swal.fire("Oops", "The email ID already exists. Please use a different email.", "error");
+                }
+                else {
+                    Swal.fire({
+                        title: "Good job!",
+                        text: "Employee saved successfully!",
+                        icon: "success",
+                        button: "Ok",
+                    });
 
+                    $('#exampleModal').modal('hide');
+
+                    // Reload the DataTable
+                    get();
+                }
             },
+            error: function (error) {
+                console.log("Error saving employee:", error);
+                Swal.fire("Oops", "An error occurred while saving your data, Please try again later.", "error");
+            }
 
         });
     }

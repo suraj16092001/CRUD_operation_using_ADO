@@ -3,6 +3,7 @@ using CRUDoperation.Models;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
+using MySqlX.XDevAPI.Common;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
@@ -75,9 +76,17 @@ namespace CRUDoperation.Controllers
         {
             EmployeeModel employee = JsonSerializer.Deserialize<EmployeeModel>(model)!;
 
-            _IEmployeeBAL.Create(employee, file);
+            
+
+            var result = _IEmployeeBAL.Create(employee,file);
+
+            if (result == "EmailExists")
+            {
+                return Json("Email Id Already Exists!");
+            }
 
             return Json("Index");
+
         }
         private string UploadImage(IFormFile imageFile)
         {

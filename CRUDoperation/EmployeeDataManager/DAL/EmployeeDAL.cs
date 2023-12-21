@@ -62,7 +62,6 @@ namespace CRUDoperation.EmployeeDataManager.DAL
             _dBManager.AddCMDParam("@age", employee.age);
             _dBManager.AddCMDParam("@imagePath", employee.imagePath);
 
-
             _dBManager.ExecuteNonQuery();
 
             return employee;
@@ -77,7 +76,6 @@ namespace CRUDoperation.EmployeeDataManager.DAL
 
             _dBManager.ExecuteNonQuery();
 
-           
         }
         public string GetProfileImageById(int id)
         {
@@ -144,5 +142,19 @@ namespace CRUDoperation.EmployeeDataManager.DAL
             return employee;
         }
 
+        public bool CheckEmailExits(string email)
+        {
+            _dBManager.InitDbCommand("ExistsEmail");
+
+            _dBManager.AddCMDParam("@emailID", email);
+
+            var result = _dBManager.ExecuteScalar();
+
+            bool emailExists = Convert.ToBoolean(result);
+
+            return emailExists;
+        }
+
+      
     }
 }
