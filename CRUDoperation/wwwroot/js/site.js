@@ -1,22 +1,65 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿function validateData() {
 
-// Write your JavaScript code.
-/*jQuery("form[name='ADDemp']").validate({
-    rules: {
-        firstName: "required",
-        imageFile: "required",
-        contactNumber: "required",
-        emailId: "required",
-        age: "required",
-        imageFile: "required"
+    var firstName = document.getElementById("firstName").value;
+    var lastName = document.getElementById("lastName").value;
+    var contactNo = document.getElementById("contactNo").value;
+    var emailId = document.getElementById("emailId").value;
+    var age = document.getElementById("age").value;
 
-    }, messages: {
-        firstName: "Please enter your first name.",
-        imageFile: "Please enter your last name.",
-        contactNumber: "Please enter your Contact Number.",
-        emailId: "Please enter your Email.",
-        age: "Please enter your age.",
-        imageFile: "Please enter image."
+    var firstNameRegex = /^[a-zA-Z]+$/;
+    var lastNameRegex = /^[a-zA-Z]+$/;
+    var contactNoRegex = /^(?:\+91|91|0)?[789]\d[1-9]$/;
+    var emailIdRegex = /^[0-9a-zA-Z]+[+._-]{0,1}[0-9a-zA-Z]+[@][a-zA-Z0-9]+[.][a-zA-Z]{2,3}([.][a-zA-Z]{2,3}){0,1}$/;
+    var ageRegex = /^[1-9][0-9]$/;
+
+    if (firstName == "") {
+
+        $("#firstName_e").text("Please Provide First Name.").show();
     }
-});*/
+    else if (!firstNameRegex.test(firstName)) {
+        $("#firstName_e").text("Please enter only characters.").show();
+    }
+
+
+
+    if (lastName == "") {
+
+        $("#lastName_e").text("Please Provide Last Name.").show();
+    }
+    else if (!lastNameRegex.test(lastName)) {
+
+        $("#lastName_e").text("Please Provide Last Name.").show();
+    }
+
+
+    if (contactNo == "") {
+
+        $("#contactNo_e").text("Please enter only characters.").show();
+    }
+    else if (!contactNoRegex.test(contactNo)) {
+
+        $("#contactNo_e").text("Please Enter valid contact Number.").show();
+    }
+
+
+
+    if (emailId == "") {
+
+        $("#emailId_e").text("Please Provide Email ID.").show();
+    }
+    else if (!emailIdRegex.test(emailId)) {
+
+        $("#emailId_e").text("Please Enter Valid Email ID").show();
+    }
+
+
+    if (age == "") {
+
+        $("#age_e").text("Please Provide Age.").show();
+    }
+    else if (!ageRegex.test(age)) {
+
+        $("#age_e").text("Please Enter valid age. ").show();
+    }
+
+}
